@@ -48,7 +48,7 @@ public class boidsController : MonoBehaviour
 			for (int j = 0; j < boids.Length; j++) {
 				if (!boidsFlocking [i].alive)
 					boidsFlocking [i].gameObject.SetActive (false);
-				if (i != j && boids[i].activeSelf && boids[j].activeSelf)
+				if (i != j && boids[i].activeSelf && boids[j].activeSelf && !boidsFlocking[i].stun && !boidsFlocking[j].stun)
 				{
 					float distance = Vector2.Distance (boids [j].transform.localPosition, boids [i].transform.localPosition);
 					if (distance < 5f) {

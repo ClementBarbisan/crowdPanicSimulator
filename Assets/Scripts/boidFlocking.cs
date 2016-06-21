@@ -13,6 +13,7 @@ public class boidFlocking : MonoBehaviour
 	public Rigidbody2D rigidbody;
 	private SpriteRenderer render;
 	public attractor[] attracts;
+	private attractor currentAttract;
 	public Vector2 dispatch;
 	private Vector2 oldDirection;
 	private bool touchAgent = false;
@@ -20,12 +21,9 @@ public class boidFlocking : MonoBehaviour
 
 	void Awake()
 	{
-		GameObject[] tmp = GameObject.FindGameObjectsWithTag ("attractor");
-		attracts = new attractor[tmp.Length];
-		for (int i = 0; i < tmp.Length; i++)
-			attracts[i] = tmp[i].GetComponent<attractor>();
-		rigidbody = GetComponent<Rigidbody2D> ();
+		attracts = FindObjectsOfType<attractor>();
 		render = GetComponent<SpriteRenderer> ();
+		currentAttract = GetComponent<attractor> ();
 	}
 
 	void Start ()
@@ -33,6 +31,7 @@ public class boidFlocking : MonoBehaviour
 		StartCoroutine ("BoidSteering");
 		dispatch = new Vector2 (0.0f, 0.0f);
 		oldDirection = new Vector2 (0.0f, 0.0f);
+		render.color = Color.green;
 	}
 
 	IEnumerator BoidSteering ()
@@ -46,7 +45,7 @@ public class boidFlocking : MonoBehaviour
 					if (20.0f - Vector2.Distance (transform.position, attract.transform.position) > 0.0f)
 						direction += new Vector2(attract.force * (20.0f - Vector2.Distance (transform.position.normalized, attract.transform.position.normalized)) / 20.0f, attract.force * (20.0f - Vector2.Distance (transform.position.normalized, attract.transform.position.normalized)) / 20.0f);
 				}
-				rigidbody.velocity += dispatch + (direction - oldDirection * 0.01f);
+				rigidbody.velocity += dispatch + (direction - oldDirection);
 				// enforce minimum and maximum speeds for the boids
 				float speed = rigidbody.velocity.magnitude;
 				if (speed > maxVelocity) {
@@ -78,40 +77,46 @@ public class boidFlocking : MonoBehaviour
 	void Update()
 	{
 		if (stun)
-			render.color = Color.blue;
-		else if (alive)
-			render.color = Color.green;
-		else
 			render.color = Color.red;
 	}
 
-	IEnumerator stuck()
+	IEnumerator die()
 	{
-		int i = 0;
-		while (touchAgent && touchWall && alive) {
-			i++;
-			yield return new WaitForSeconds(1);
-			if (i >= 3)
-				alive = false;
-		}
+		stun = true;
+		rigidbody.velocity = Vector2.zero;
+		yield return new WaitForSeconds(2);
+		alive = false;
 	}
 
 	void OnCollisionExit2D(Collision2D coll)
 	{
 		if (coll.collider.tag == "agents")
 			touchAgent = false;
+		if (coll.collider.tag == "wall")
+			touchWall = false;
 	}
 
 	void OnCollisionEnter2D(Collision2D coll)
 	{
 		if (touchAgent && coll.collider.tag == "wall" && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f))
-			alive = false;
+			StartCoroutine ("die");
 		if (coll.collider.tag == "wall")
 		{
-			StartCoroutine ("stuck");
+//			StartCoroutine ("stuck");
 			touchWall = true;
 		}
 		if (coll.collider.tag == "agents") 
 			touchAgent = true;
+	}
+
+	void OnMouseOver()
+	{
+		if (Input.GetMouseButtonDown (0)) {
+			currentAttract.force += 5;
+			render.color += new Color (0.1f, 0.1f, 0.1f, 0.0f);
+		} else if (Input.GetMouseButtonDown (1)) {
+			currentAttract.force -= 5;
+			render.color -= new Color (0.1f, 0.1f, 0.1f, 0.0f);
+		}
 	}
 }
