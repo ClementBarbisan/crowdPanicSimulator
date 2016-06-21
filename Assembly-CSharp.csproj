@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{0C5F4F1E-BA59-E695-30EF-C234718FFF9B}</ProjectGuid>
+    <ProjectGuid>{308BEB37-FF98-D9F9-D820-73353CC36EFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -45,10 +45,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\attractor.cs" />
-     <Compile Include="Assets\boidFlocking.cs" />
-     <Compile Include="Assets\boidsController.cs" />
-     <Compile Include="Assets\directionalArea.cs" />
+     <Compile Include="Assets\Scripts\Open.cs" />
+     <Compile Include="Assets\Scripts\attractor.cs" />
+     <Compile Include="Assets\Scripts\boidFlocking.cs" />
+     <Compile Include="Assets\Scripts\boidsController.cs" />
+     <Compile Include="Assets\Scripts\directionalArea.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
