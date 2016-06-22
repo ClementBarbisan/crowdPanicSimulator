@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Open.cs" />
+     <Compile Include="Assets\Scripts\arrival.cs" />
      <Compile Include="Assets\Scripts\attractor.cs" />
      <Compile Include="Assets\Scripts\boidFlocking.cs" />
      <Compile Include="Assets\Scripts\boidsController.cs" />

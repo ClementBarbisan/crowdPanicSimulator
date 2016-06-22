@@ -18,6 +18,7 @@ public class boidFlocking : MonoBehaviour
 	private Vector2 oldDirection;
 	private bool touchAgent = false;
 	private bool touchWall = false;
+	private int stuckIndex = 0;
 
 	void Awake()
 	{
@@ -78,44 +79,65 @@ public class boidFlocking : MonoBehaviour
 	{
 		if (stun)
 			render.color = Color.red;
+		if (stuckIndex > 4)
+			StartCoroutine ("stuck");
+	}
+
+	IEnumerator stuck()
+	{
+		int i = 0;
+		while (((stuckIndex > 3 && touchWall) || stuckIndex > 4) && stuckIndex < 7) 
+		{
+			i++;
+			if (i > 7000 - stuckIndex * 1000)
+				StartCoroutine ("die");
+			yield return null;
+		}
 	}
 
 	IEnumerator die()
 	{
 		stun = true;
-		rigidbody.velocity = Vector2.zero;
+		GetComponent<CircleCollider2D> ().enabled = false;
+		rigidbody.simulated = false;
 		yield return new WaitForSeconds(2);
 		alive = false;
 	}
 
 	void OnCollisionExit2D(Collision2D coll)
 	{
-		if (coll.collider.tag == "agents")
+		if (coll.collider.tag == "agents") {
+			stuckIndex--;
 			touchAgent = false;
-		if (coll.collider.tag == "wall")
+		}
+		if (coll.collider.tag == "wall") {
+			stuckIndex -= 2;
 			touchWall = false;
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D coll)
 	{
-		if (touchAgent && coll.collider.tag == "wall" && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f))
+		if (coll.collider.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 20.0f || rigidbody.velocity.y > 20.0f)))
 			StartCoroutine ("die");
 		if (coll.collider.tag == "wall")
 		{
-//			StartCoroutine ("stuck");
+			stuckIndex += 2;
 			touchWall = true;
 		}
-		if (coll.collider.tag == "agents") 
+		if (coll.collider.tag == "agents") {
+			stuckIndex++;
 			touchAgent = true;
+		}
 	}
 
 	void OnMouseOver()
 	{
 		if (Input.GetMouseButtonDown (0)) {
-			currentAttract.force += 5;
+			currentAttract.force += 3;
 			render.color += new Color (0.1f, 0.1f, 0.1f, 0.0f);
 		} else if (Input.GetMouseButtonDown (1)) {
-			currentAttract.force -= 5;
+			currentAttract.force -= 3;
 			render.color -= new Color (0.1f, 0.1f, 0.1f, 0.0f);
 		}
 	}

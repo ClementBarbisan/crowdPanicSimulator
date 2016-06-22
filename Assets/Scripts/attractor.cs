@@ -10,6 +10,7 @@ public class attractor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKeyDown (KeyCode.Space))
+			force -= 1000;
 	}
 }

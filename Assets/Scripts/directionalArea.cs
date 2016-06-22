@@ -14,7 +14,7 @@ public class directionalArea : MonoBehaviour {
 	
 	}
 
-	void OnTriggerStay2D(Collider2D coll)
+	void OnTriggerEnter2D(Collider2D coll)
 	{
 		boidFlocking tmp;
 		if ((tmp = coll.GetComponent<boidFlocking> ()))

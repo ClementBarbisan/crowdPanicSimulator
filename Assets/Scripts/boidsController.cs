@@ -36,7 +36,7 @@ public class boidsController : MonoBehaviour
 			boid.GetComponent<boidFlocking>().SetController (gameObject);
 			boidsRigidBody [i] = boid.gameObject.GetComponent<Rigidbody2D> ();
 			boidsFlocking [i] = boid.gameObject.GetComponent<boidFlocking> ();
-			boidsRigidBody [i].AddForce (new Vector2(Random.Range (-0.5f, 0.5f), Random.Range (-0.5f, 0.5f)), ForceMode2D.Force);
+			boidsRigidBody [i].AddForce (new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), ForceMode2D.Force);
 			boids[i] = boid;
 		}
 	}
@@ -54,7 +54,7 @@ public class boidsController : MonoBehaviour
 					if (distance < 5f) {
 //						Debug.Log ("distance = " + distance + ", radius = " + radius);
 						boidsRigidBody [j].velocity += (boidsRigidBody [i].velocity - boidsRigidBody [j].velocity) * 0.01f;
-						if (distance >= radius)
+						if (distance >= radius * 5)
 							boidsFlocking [j].dispatch += (boidsRigidBody [i].velocity - boidsRigidBody [j].velocity) * 0.001f;
 						else
 							boidsFlocking [j].dispatch = new Vector2 (0.0f, 0.0f);
