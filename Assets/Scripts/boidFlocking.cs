@@ -21,16 +21,20 @@ public class boidFlocking : MonoBehaviour
 	private bool touchWall = false;
 	private int stuckIndex = 0;
 	private boidsController boidController;
+	public AudioSource soundying;
+	private Animator anim;
 
 	void Awake()
 	{
 		attracts = FindObjectsOfType<attractor>();
 		render = GetComponent<SpriteRenderer> ();
 		currentAttract = GetComponent<attractor> ();
+		anim = GetComponent<Animator> ();
 	}
 
 	void Start ()
 	{
+		anim.SetBool ("stopped", false);
 		StartCoroutine ("BoidSteering");
 		dispatch = new Vector2 (0.0f, 0.0f);
 		oldDirection = new Vector2 (0.0f, 0.0f);
@@ -50,7 +54,7 @@ public class boidFlocking : MonoBehaviour
 				}
 //				Debug.Log (direction.x);
 				Vector2 tmp = (direction + dispatch +  Calc()) * Time.deltaTime;
-				Debug.Log ("Vector.x = " + tmp.x + ", vector.y = " + tmp.y);
+//				Debug.Log ("Vector.x = " + tmp.x + ", vector.y = " + tmp.y);
 				if (tmp.magnitude > maxAcceleration)
 					rigidbody.velocity += rigidbody.velocity.normalized * maxAcceleration;
 				else
@@ -123,7 +127,10 @@ public class boidFlocking : MonoBehaviour
 		stun = true;
 		GetComponent<CircleCollider2D> ().enabled = false;
 		rigidbody.simulated = false;
-		yield return new WaitForSeconds(2);
+		transform.localScale *= 0.2f;
+		anim.SetBool ("stopped", true);
+		soundying.Play ();
+		yield return new WaitForSeconds(5);
 		alive = false;
 	}
 
@@ -160,10 +167,12 @@ public class boidFlocking : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown (0)) {
 			currentAttract.force += 3;
-			render.color += new Color (0.1f, 0.1f, 0.1f, 0.0f);
+			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
 		} else if (Input.GetMouseButtonDown (1)) {
-			currentAttract.force -= 3;
-			render.color -= new Color (0.1f, 0.1f, 0.1f, 0.0f);
+			currentAttract.force -= 30;
+			rigidbody.simulated = false;
+			anim.speed = 0;
+			render.color -= new Color (0.0f, 0.0f, 0.5f, 0.0f);
 		}
 	}
 }
