@@ -144,11 +144,12 @@ public class boidFlocking : MonoBehaviour
 			StartCoroutine ("die");
 		if (coll.collider.tag == "wall")
 		{
-			rigidbody.velocity = new Vector2 (0.0f, 0.0f);
+			rigidbody.velocity = Vector2.zero;
 			stuckIndex += 2;
 			touchWall = true;
 		}
 		if (coll.collider.tag == "agents") {
+			rigidbody.velocity = Vector2.zero;
 			stuckIndex++;
 			touchAgent = true;
 		}
