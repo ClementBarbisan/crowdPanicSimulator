@@ -4,6 +4,7 @@ using System.Collections;
 public class attractor : MonoBehaviour {
 	public float force;
 	private float initForce;
+
 	// Use this for initialization
 	void Start () {
 		initForce = force;

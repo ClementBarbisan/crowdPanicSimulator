@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\boidFlocking.cs" />
      <Compile Include="Assets\Scripts\boidsController.cs" />
      <Compile Include="Assets\Scripts\directionalArea.cs" />
+     <Compile Include="Assets\Scripts\explose.cs" />
      <Compile Include="Assets\Scripts\stairs.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
