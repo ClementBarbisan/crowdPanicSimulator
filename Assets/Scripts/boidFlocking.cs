@@ -97,6 +97,8 @@ public class boidFlocking : MonoBehaviour
 
 	void Update()
 	{
+		if (rigidbody.velocity.magnitude > maxAcceleration)
+			rigidbody.velocity = rigidbody.velocity.normalized * maxAcceleration;
 		if (stun)
 			render.color = Color.red;
 		if (stuckIndex > 4)
@@ -142,6 +144,7 @@ public class boidFlocking : MonoBehaviour
 			StartCoroutine ("die");
 		if (coll.collider.tag == "wall")
 		{
+			rigidbody.velocity = new Vector2 (0.0f, 0.0f);
 			stuckIndex += 2;
 			touchWall = true;
 		}
