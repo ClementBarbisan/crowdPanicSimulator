@@ -34,7 +34,7 @@ public class boidFlocking : MonoBehaviour
 		StartCoroutine ("BoidSteering");
 		dispatch = new Vector2 (0.0f, 0.0f);
 		oldDirection = new Vector2 (0.0f, 0.0f);
-		render.color = Color.green;
+		render.color = Color.white;
 	}
 
 	IEnumerator BoidSteering ()
