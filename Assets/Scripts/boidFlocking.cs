@@ -50,6 +50,7 @@ public class boidFlocking : MonoBehaviour
 				}
 //				Debug.Log (direction.x);
 				Vector2 tmp = (direction + dispatch +  Calc()) * Time.deltaTime;
+				Debug.Log ("Vector.x = " + tmp.x + ", vector.y = " + tmp.y);
 				if (tmp.magnitude > maxAcceleration)
 					rigidbody.velocity += rigidbody.velocity.normalized * maxAcceleration;
 				else
