@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class boidsController : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class boidsController : MonoBehaviour
 	public float randomness = 1;
 	public int flockSize = 20;
 	public GameObject prefab;
-	public GameObject chasee;
 	private float radius;
 	public Collider2D coll;
 	private GameObject[] boids;
@@ -46,8 +46,11 @@ public class boidsController : MonoBehaviour
 		for (int i = 0; i < boids.Length; i++)
 		{
 			for (int j = 0; j < boids.Length; j++) {
-				if (!boidsFlocking [i].alive)
+				if (!boidsFlocking [i].alive && boidsFlocking[i].isActiveAndEnabled) 
+				{
+					flockSize--;
 					boidsFlocking [i].gameObject.SetActive (false);
+				}
 				if (i != j && boids[i].activeSelf && boids[j].activeSelf && !boidsFlocking[i].stun && !boidsFlocking[j].stun)
 				{
 					float distance = Vector2.Distance (boids [j].transform.localPosition, boids [i].transform.localPosition);
