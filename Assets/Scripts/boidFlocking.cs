@@ -45,8 +45,8 @@ public class boidFlocking : MonoBehaviour
 			if (inited)
 			{
 				foreach (attractor attract in attracts) {
-					if (Mathf.Abs(attract.transform.position.x - transform.position.x) > 0.001f && Mathf.Abs(attract.transform.position.y - transform.position.y) > 0.001f)
-						direction += new Vector2( attract.force / Mathf.Pow((transform.position.x - attract.transform.position.x), 2),  attract.force / Mathf.Pow((transform.position.y - attract.transform.position.y), 2));
+					if (Mathf.Abs(attract.transform.localPosition.x - transform.localPosition.x) > 0.001f && Mathf.Abs(attract.transform.localPosition.y - transform.localPosition.y) > 0.001f)
+						direction += new Vector2( attract.force / Mathf.Pow((transform.localPosition.x - attract.transform.localPosition.x), 2),  attract.force / Mathf.Pow((transform.localPosition.y - attract.transform.localPosition.y), 2));
 				}
 //				Debug.Log (direction.x);
 				Vector2 tmp = (direction + dispatch +  Calc()) * Time.deltaTime;
