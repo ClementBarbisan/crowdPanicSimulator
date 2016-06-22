@@ -9,6 +9,7 @@ public class boidFlocking : MonoBehaviour
 	public bool stun = false;
 	private float minVelocity;
 	private float maxVelocity;
+	private float maxAcceleration;
 	private float randomness;
 	public Rigidbody2D rigidbody;
 	private SpriteRenderer render;
@@ -19,6 +20,7 @@ public class boidFlocking : MonoBehaviour
 	private bool touchAgent = false;
 	private bool touchWall = false;
 	private int stuckIndex = 0;
+	private boidsController boidController;
 
 	void Awake()
 	{
@@ -43,10 +45,16 @@ public class boidFlocking : MonoBehaviour
 			if (inited)
 			{
 				foreach (attractor attract in attracts) {
-					if (20.0f - Vector2.Distance (transform.position, attract.transform.position) > 0.0f)
-						direction += new Vector2(attract.force * (20.0f - Vector2.Distance (transform.position.normalized, attract.transform.position.normalized)) / 20.0f, attract.force * (20.0f - Vector2.Distance (transform.position.normalized, attract.transform.position.normalized)) / 20.0f);
+					if (Mathf.Abs(attract.transform.position.x - transform.position.x) > 0.001f && Mathf.Abs(attract.transform.position.y - transform.position.y) > 0.001f)
+						direction += new Vector2( attract.force / Mathf.Pow((transform.position.x - attract.transform.position.x), 2),  attract.force / Mathf.Pow((transform.position.y - attract.transform.position.y), 2));
 				}
-				rigidbody.velocity += dispatch + (direction - oldDirection);
+//				Debug.Log (direction.x);
+				Vector2 tmp = (direction + dispatch +  Calc()) * Time.deltaTime;
+				if (tmp.magnitude > maxAcceleration)
+					rigidbody.velocity += rigidbody.velocity.normalized * maxAcceleration;
+				else
+					rigidbody.velocity += tmp;
+//				rigidbody.velocity += dispatch + direction * Time.deltaTime;
 				// enforce minimum and maximum speeds for the boids
 				float speed = rigidbody.velocity.magnitude;
 				if (speed > maxVelocity) {
@@ -64,14 +72,26 @@ public class boidFlocking : MonoBehaviour
 			yield return null;
 		}
 	}
-		
+
+	private Vector2 Calc ()
+	{
+		Vector2 flockCenter = boidController.flockCenter;
+		Vector2 flockVelocity = boidController.flockVelocity;
+
+		flockCenter = flockCenter - new Vector2(transform.localPosition.x, transform.localPosition.y);
+		flockVelocity = flockVelocity - rigidbody.velocity;
+
+		return (flockCenter + flockVelocity);
+	}
+
 	public void SetController (GameObject theController)
 	{
 		Controller = theController;
-		boidsController boidController = Controller.GetComponent<boidsController>();
+		boidController = Controller.GetComponent<boidsController>();
 		minVelocity = boidController.minVelocity;
 		maxVelocity = boidController.maxVelocity;
 		randomness = boidController.randomness;
+		maxAcceleration = boidController.maxAcceleration;
 		inited = true;
 	}
 
@@ -118,7 +138,7 @@ public class boidFlocking : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D coll)
 	{
-		if (coll.collider.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 20.0f || rigidbody.velocity.y > 20.0f)))
+		if (coll.collider.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 25.0f || rigidbody.velocity.y > 25.0f)))
 			StartCoroutine ("die");
 		if (coll.collider.tag == "wall")
 		{

@@ -14,10 +14,10 @@ public class directionalArea : MonoBehaviour {
 	
 	}
 
-	void OnTriggerEnter2D(Collider2D coll)
+	void OnTriggerStay2D(Collider2D coll)
 	{
 		boidFlocking tmp;
 		if ((tmp = coll.GetComponent<boidFlocking> ()))
-			tmp.rigidbody.velocity += new Vector2 (speedX, speedY);
+			tmp.rigidbody.velocity += new Vector2 (speedX * Time.deltaTime, speedY * Time.deltaTime);
 	}
 }
