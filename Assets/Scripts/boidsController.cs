@@ -55,11 +55,11 @@ public class boidsController : MonoBehaviour
 			float maxValue = 0;
 			for (int i = 0; i < 5; i++) {
 				Debug.DrawRay (flockCenter, 
-					new Vector2 ((flockVelocity.x + 1.0f) * 20 * Mathf.Cos ((i * (360 / 5)) * Mathf.Deg2Rad),
-						(flockVelocity.y + 1.0f) * 20 * Mathf.Sin ((i * (360 / 5)) * Mathf.Deg2Rad)));
+					new Vector2 ((flockVelocity.x + 1.0f) * 100 * Mathf.Cos ((i * (360 / 5)) * Mathf.Deg2Rad),
+						(flockVelocity.y + 1.0f) * 100 * Mathf.Sin ((i * (360 / 5)) * Mathf.Deg2Rad)));
 				RaycastHit2D[] hits = Physics2D.RaycastAll (flockCenter, 
-					new Vector2 ((flockVelocity.x + 1.0f) * 20 * Mathf.Cos ((i * (360 / 5)) * Mathf.Deg2Rad),
-						(flockVelocity.y + 1.0f) * 20 * Mathf.Sin ((i * (360 / 5) + 360) * Mathf.Deg2Rad)));
+					new Vector2 ((flockVelocity.x + 1.0f) * 100 * Mathf.Cos ((i * (360 / 5)) * Mathf.Deg2Rad),
+						(flockVelocity.y + 1.0f) * 100 * Mathf.Sin ((i * (360 / 5) + 360) * Mathf.Deg2Rad)));
 				foreach (RaycastHit2D hit in hits) {
 					if (hit.collider.tag != "agents" && hit.distance > maxValue) {
 						Debug.Log (hit.collider.tag);
@@ -72,8 +72,8 @@ public class boidsController : MonoBehaviour
 			}
 			flockCenter += new Vector2 (flockVelocity.x + Mathf.Cos ((maxIndex * (360 / 5)) * Mathf.Deg2Rad),
 				flockVelocity.y + Mathf.Sin ((maxIndex * (360 / 5)) * Mathf.Deg2Rad));
-			//			rigidbody.flockVelocity += new Vector2 (rigidbody.flockVelocity.x + Mathf.Cos ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad),
-			//				rigidbody.flockVelocity.y + Mathf.Sin ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad));
+			flockVelocity += new Vector2 (flockVelocity.x + Mathf.Cos ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad),
+							flockVelocity.y + Mathf.Sin ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad));
 			//		yield return null;
 			Vector2 theCenter = Vector2.zero;
 			Vector2 theVelocity = Vector2.zero;

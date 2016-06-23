@@ -107,11 +107,12 @@ public class boidFlocking : MonoBehaviour
 		if (inited)
 		{
 			Vector2 direction = new Vector2(0.0f, 0.0f);
-			Vector3 coordinates = Camera.main.WorldToViewportPoint (transform.position);
+			Vector3 coordinates = Camera.main.WorldToScreenPoint (transform.position);
 			foreach (attractor attract in attracts) {
-				Vector3 coordinatesAttract = Camera.main.WorldToViewportPoint (attract.transform.position);
-				if (Vector3.Distance(coordinatesAttract, coordinates) > 0.001f)
-					direction += new Vector2( attract.force / Vector3.Distance(coordinatesAttract, coordinates) * (coordinatesAttract.x - coordinates.x),  attract.force / Vector3.Distance(coordinatesAttract, coordinates) * (coordinatesAttract.y - coordinates.y));
+				Vector3 coordinatesAttract = Camera.main.WorldToScreenPoint (attract.transform.position);
+				float dist = Vector3.Distance (coordinatesAttract, coordinates) * 10;
+				if (dist > 0.001f)
+					direction += new Vector2( (attract.force / (dist)) * (coordinatesAttract.x - coordinates.x),  (attract.force / (dist)) * (coordinatesAttract.y - coordinates.y));
 			}
 			//		direction /= attracts.Length;
 //			flockVelocity += direction * Time.deltaTime;
