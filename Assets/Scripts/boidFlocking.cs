@@ -23,6 +23,7 @@ public class boidFlocking : MonoBehaviour
 	private Animator anim;
 	private Vector2 currentWallPosition;
 	public SpriteRenderer circleRange;
+	private bool dying = false;
 
 	void Awake()
 	{
@@ -102,7 +103,7 @@ public class boidFlocking : MonoBehaviour
 			render.color = new Color(1.0f, 1.0f - 1.0f / 12.0f * stuckIndex, 1.0f - 1.0f / 12.0f * stuckIndex, 1.0f);
 		else
 			render.color = Color.white;
-		if (stuckIndex > 4)
+		if (stuckIndex > 4 && !stun)
 			StartCoroutine ("stuck");
 		if (inited)
 		{
@@ -142,7 +143,7 @@ public class boidFlocking : MonoBehaviour
 		while (((stuckIndex > 3 && touchWall) || stuckIndex > 4) && stuckIndex < 12) 
 		{
 			i++;
-			if (i > 11050 - stuckIndex * 1000) {
+			if (i > 11050 - stuckIndex * 1000 && !dying) {
 				StartCoroutine ("die");
 				return true;
 			}
@@ -153,6 +154,7 @@ public class boidFlocking : MonoBehaviour
 
 	IEnumerator die()
 	{
+		dying = true;
 		GetComponent<CircleCollider2D> ().enabled = false;
 		rigidbody.simulated = false;
 		GetComponent<SpriteRenderer> ().sortingOrder = 3;
@@ -211,7 +213,7 @@ public class boidFlocking : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D coll)
 	{
-		if (coll.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 25.0f || rigidbody.velocity.y > 25.0f)))
+		if (!dying && coll.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 25.0f || rigidbody.velocity.y > 25.0f)))
 			StartCoroutine ("die");
 		if (coll.tag == "wall")
 		{
