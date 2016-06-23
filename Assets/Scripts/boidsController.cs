@@ -34,10 +34,9 @@ public class boidsController : MonoBehaviour
 				Random.value * coll.bounds.size.y,
 				Random.value * coll.bounds.size.z
 			) - coll.bounds.extents;
-
-			GameObject boid = Instantiate(prefab, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
+			GameObject boid = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
 			boid.transform.parent = transform;
-			boid.transform.position = position;
+			boid.transform.localPosition = position;
 			radius = boid.GetComponent<CircleCollider2D> ().radius;
 			boid.GetComponent<boidFlocking>().SetController (gameObject);
 			boidsRigidBody [i] = boid.gameObject.GetComponent<Rigidbody2D> ();
