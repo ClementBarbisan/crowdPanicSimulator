@@ -95,7 +95,7 @@ public class boidsController : MonoBehaviour
 
 	void Update ()
 	{
-		counter.text = "Count : " + flockSize + "/" + maxFlockSize;
+		counter.text = "Alive : " + flockSize + "/" + maxFlockSize;
 		Vector2 theCenter = Vector2.zero;
 //		Vector2 theVelocity = Vector2.zero;
 

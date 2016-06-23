@@ -142,7 +142,7 @@ public class boidFlocking : MonoBehaviour
 		while (((stuckIndex > 3 && touchWall) || stuckIndex > 4) && stuckIndex < 12) 
 		{
 			i++;
-			if (i > 11075 - stuckIndex * 1000) {
+			if (i > 11050 - stuckIndex * 1000) {
 				StartCoroutine ("die");
 				return true;
 			}
@@ -155,6 +155,7 @@ public class boidFlocking : MonoBehaviour
 	{
 		GetComponent<CircleCollider2D> ().enabled = false;
 		rigidbody.simulated = false;
+		GetComponent<SpriteRenderer> ().sortingOrder = 3;
 		transform.localScale *= 0.2f;
 		anim.SetBool ("stopped", true);
 		soundying.Play ();
