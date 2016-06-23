@@ -101,7 +101,7 @@ public class boidsController : MonoBehaviour
 
 		for (int i = 0; i < boids.Length; i++)
 		{
-			if (boids [i].activeSelf) 
+			if (boids [i].activeSelf && boidsRigidBody[i].simulated) 
 			{
 				theCenter = theCenter + new Vector2 (boids [i].transform.position.x, boids [i].transform.position.y);
 				//				theVelocity = theVelocity + boidsRigidBody [i].velocity.normalized;

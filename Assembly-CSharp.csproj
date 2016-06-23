@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Open.cs" />
      <Compile Include="Assets\Scripts\arrival.cs" />
      <Compile Include="Assets\Scripts\attractor.cs" />

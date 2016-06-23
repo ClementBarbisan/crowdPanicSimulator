@@ -6,29 +6,51 @@ using UnityEngine.SceneManagement;
 public class arrival : MonoBehaviour {
 	public boidsController manager;
 	public Text winText;
+	public Text arrivedText;
+	public Text timer;
+	public int time;
 	private int flockMax;
 	private int count;
-    public int scene;
+    public string scene;
 
 	// Use this for initialization
 	void Start () {
 		flockMax = manager.flockSize;
 		winText.text = "";
+		arrivedText.text = "";
+		timer.text = "00:" + time;
+		StartCoroutine ("startTimer");
+	}
+
+	IEnumerator startTimer()
+	{
+		while (time >= 0)
+		{
+			yield return new WaitForSeconds (1);
+			timer.text = "00:" + time;
+			if (time == 0)
+				StartCoroutine ("loadScene");
+			time--;
+		}
 	}
 
     IEnumerator loadScene()
     {
+		winText.text = count + "/" + flockMax;
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("Tuto " + scene);
+        SceneManager.LoadScene(scene);
     }
 
 	// Update is called once per frame
 	void Update () {
-        if (count >= manager.flockSize)
-        {
-            winText.text = "Victory\n" + count + "/" + flockMax;
-            StartCoroutine ("loadScene");
-        }
+		arrivedText.text = "Safe : " + count + "/" + flockMax;
+//        if (count >= manager.flockSize)
+//        {
+//            winText.text = count + "/" + flockMax;
+//            StartCoroutine ("loadScene");
+//        }
+		if (Input.GetKeyDown (KeyCode.R))
+			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}
 
 

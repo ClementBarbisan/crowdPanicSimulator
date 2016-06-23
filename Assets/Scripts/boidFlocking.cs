@@ -185,8 +185,8 @@ public class boidFlocking : MonoBehaviour
 			float avoidY = transform.position.y - coll.transform.position.y;
 			float angle = Mathf.Atan2 (avoidY, avoidX);
 			rigidbody.velocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
-			boidController.flockCenter += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
-			boidController.flockVelocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
+			boidController.flockCenter += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
+			boidController.flockVelocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
 		}
 		else if (coll.tag == "agents") {
 			if (touchWall) {
@@ -243,8 +243,8 @@ public class boidFlocking : MonoBehaviour
 		if (Input.GetMouseButtonDown (1)) {
 			currentAttract.force += 3;
 			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
-		} else if (Input.GetMouseButtonDown (0)) {
-			currentAttract.force -= 7;
+		} else if (Input.GetMouseButtonDown (0) && rigidbody.simulated) {
+			currentAttract.force -= 10;
 			boidController.flockSize--;
 			rigidbody.simulated = false;
 			anim.speed = 0;
