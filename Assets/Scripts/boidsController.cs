@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class boidsController : MonoBehaviour
 {
-	public float minVelocity = 5;
 	public float maxVelocity = 20;
 	public float randomness = 1;
 	public int flockSize = 20;
@@ -15,7 +14,6 @@ public class boidsController : MonoBehaviour
 	private GameObject[] boids;
 	private Rigidbody2D[] boidsRigidBody;
 	private boidFlocking[] boidsFlocking;
-	private attractor[] attracts;
 	public Vector2 flockCenter;
 	public Vector2 flockVelocity;
 	public bool raycast = false;
@@ -42,11 +40,8 @@ public class boidsController : MonoBehaviour
 			boid.GetComponent<boidFlocking>().SetController (gameObject);
 			boidsRigidBody [i] = boid.gameObject.GetComponent<Rigidbody2D> ();
 			boidsFlocking [i] = boid.gameObject.GetComponent<boidFlocking> ();
-//			boidsRigidBody [i].AddForce (new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)), ForceMode2D.Force);
 			boids[i] = boid;
 		}
-		attracts = FindObjectsOfType<attractor>();
-//		Debug.Log ("attracts.Length = " + attracts.Length);
 		counter.text = "";
 		if (raycast)
 			StartCoroutine ("raycastSearch");
@@ -101,7 +96,7 @@ public class boidsController : MonoBehaviour
 	{
 		counter.text = "Count : " + flockSize + "/50";
 		Vector2 theCenter = Vector2.zero;
-		Vector2 theVelocity = Vector2.zero;
+//		Vector2 theVelocity = Vector2.zero;
 
 		for (int i = 0; i < boids.Length; i++)
 		{

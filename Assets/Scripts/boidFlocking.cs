@@ -7,16 +7,13 @@ public class boidFlocking : MonoBehaviour
 	private bool inited = false;
 	public bool alive = true;
 	public bool stun = false;
-	private float minVelocity;
 	private float maxVelocity;
 	private float maxAcceleration;
-	private float randomness;
 	public Rigidbody2D rigidbody;
 	private SpriteRenderer render;
 	public attractor[] attracts;
 	private attractor currentAttract;
 	public Vector2 dispatch;
-	private Vector2 oldDirection;
 	private Vector2 currentCenter;
 	private bool touchAgent = false;
 	private bool touchWall = false;
@@ -69,7 +66,6 @@ public class boidFlocking : MonoBehaviour
 		anim.SetBool ("stopped", false);
 //		StartCoroutine ("raycastSearch");
 		dispatch = new Vector2 (0.0f, 0.0f);
-		oldDirection = new Vector2 (0.0f, 0.0f);
 		attracts = FindObjectsOfType<attractor>();
 		render.color = Color.white;
 	}
@@ -89,9 +85,7 @@ public class boidFlocking : MonoBehaviour
 	{
 		Controller = theController;
 		boidController = Controller.GetComponent<boidsController>();
-		minVelocity = boidController.minVelocity;
 		maxVelocity = boidController.maxVelocity;
-		randomness = boidController.randomness;
 		maxAcceleration = boidController.maxAcceleration;
 		inited = true;
 	}
@@ -102,7 +96,7 @@ public class boidFlocking : MonoBehaviour
 //			rigidbody.velocity = rigidbody.velocity.normalized * maxAcceleration;
 		transform.Rotate(new Vector3(0.0f, 0.0f, Mathf.Atan2(transform.position.y, transform.position.x) - transform.rotation.z));
 		if (stun)
-			render.color = Color.red;
+			render.color = new Color(1.0f, 1.0f - 1.0f / 12.0f * stuckIndex, 1.0f - 1.0f / 12.0f * stuckIndex, 1.0f);
 		else
 			render.color = Color.white;
 		if (stuckIndex > 4)
@@ -144,7 +138,7 @@ public class boidFlocking : MonoBehaviour
 		while (((stuckIndex > 3 && touchWall) || stuckIndex > 4) && stuckIndex < 12) 
 		{
 			i++;
-			if (i > 11200 - stuckIndex * 1000) {
+			if (i > 11100 - stuckIndex * 1000) {
 				StartCoroutine ("die");
 				return true;
 			}
@@ -197,6 +191,8 @@ public class boidFlocking : MonoBehaviour
 				float avoidY = transform.position.y - coll.transform.position.y - currentWallPosition.y;
 				float angle = Mathf.Atan2 (avoidY, avoidX);
 				rigidbody.velocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
+				if (Vector2.Distance (transform.position, coll.transform.position) < boidController.radius / 3.0f)
+					stuckIndex++;
 			}
 			else
 			{
@@ -225,18 +221,16 @@ public class boidFlocking : MonoBehaviour
 		if (coll.tag == "agents") {
 			stuckIndex++;
 			touchAgent = true;
-			if (Vector2.Distance (transform.position, coll.transform.position) < boidController.radius / 3.0f)
-				stuckIndex++;
 		}
 
 	}
 
 	void OnMouseOver()
 	{
-		if (Input.GetMouseButtonDown (0)) {
+		if (Input.GetMouseButtonDown (1)) {
 			currentAttract.force += 3;
 			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
-		} else if (Input.GetMouseButtonDown (1)) {
+		} else if (Input.GetMouseButtonDown (0)) {
 			currentAttract.force -= 10;
 			boidController.flockSize--;
 			rigidbody.simulated = false;
