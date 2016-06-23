@@ -50,8 +50,11 @@ public class arrival : MonoBehaviour {
 	void Update () {
 		if (!end)
 			arrivedText.text = "Safe : " + count + "/" + flockMax;
-        if (count >= manager.flockSize)
-            StartCoroutine ("loadScene");
+//        if (count >= manager.flockSize)
+//        {
+//            winText.text = count + "/" + flockMax;
+//            StartCoroutine ("loadScene");
+//        }
 		if (Input.GetKeyDown (KeyCode.R))
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}

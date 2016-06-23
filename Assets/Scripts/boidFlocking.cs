@@ -4,6 +4,7 @@ using System.Collections;
 public class boidFlocking : MonoBehaviour
 {
 	private GameObject Controller;
+	private float distMax = 5000f;
 	private bool inited = false;
 	public bool alive = true;
 	public bool stun = false;
@@ -23,7 +24,6 @@ public class boidFlocking : MonoBehaviour
 	private Animator anim;
 	private Vector2 currentWallPosition;
 	public SpriteRenderer circleRange;
-	private bool dying = false;
 
 	void Awake()
 	{
@@ -91,6 +91,7 @@ public class boidFlocking : MonoBehaviour
 		boidController = Controller.GetComponent<boidsController>();
 		maxVelocity = boidController.maxVelocity;
 		maxAcceleration = boidController.maxAcceleration;
+		distMax = boidController.maxDist;
 		inited = true;
 	}
 
@@ -103,7 +104,7 @@ public class boidFlocking : MonoBehaviour
 			render.color = new Color(1.0f, 1.0f - 1.0f / 12.0f * stuckIndex, 1.0f - 1.0f / 12.0f * stuckIndex, 1.0f);
 		else
 			render.color = Color.white;
-		if (stuckIndex > 4 && !stun)
+		if (stuckIndex > 4)
 			StartCoroutine ("stuck");
 		if (inited)
 		{
@@ -112,7 +113,7 @@ public class boidFlocking : MonoBehaviour
 			foreach (attractor attract in attracts) {
 				Vector3 coordinatesAttract = Camera.main.WorldToScreenPoint (attract.transform.position);
 				float dist = Vector3.Distance (coordinatesAttract, coordinates) * 20;
-				if (dist > 0.001f && dist < 1500f)
+				if (dist > 0.001f && dist < distMax)
 					direction += new Vector2( (attract.force / (dist)) * (coordinatesAttract.x - coordinates.x),  (attract.force / (dist)) * (coordinatesAttract.y - coordinates.y));
 			}
 //			direction /= attracts.Length;
@@ -143,7 +144,7 @@ public class boidFlocking : MonoBehaviour
 		while (((stuckIndex > 3 && touchWall) || stuckIndex > 4) && stuckIndex < 12) 
 		{
 			i++;
-			if (i > 11050 - stuckIndex * 1000 && !dying) {
+			if (i > 11050 - stuckIndex * 1000) {
 				StartCoroutine ("die");
 				return true;
 			}
@@ -154,7 +155,6 @@ public class boidFlocking : MonoBehaviour
 
 	IEnumerator die()
 	{
-		dying = true;
 		GetComponent<CircleCollider2D> ().enabled = false;
 		rigidbody.simulated = false;
 		GetComponent<SpriteRenderer> ().sortingOrder = 3;
@@ -213,7 +213,7 @@ public class boidFlocking : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D coll)
 	{
-		if (!dying && coll.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 25.0f || rigidbody.velocity.y > 25.0f)))
+		if (coll.tag == "wall" && ((touchAgent && (rigidbody.velocity.x > 12.0f || rigidbody.velocity.y > 12.0f)) || (rigidbody.velocity.x > 25.0f || rigidbody.velocity.y > 25.0f)))
 			StartCoroutine ("die");
 		if (coll.tag == "wall")
 		{

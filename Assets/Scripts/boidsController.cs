@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class boidsController : MonoBehaviour
 {
 	public float maxVelocity = 20;
+	public float maxDist = 5000f;
 	public float randomness = 1;
 	public int flockSize = 20;
 	private int maxFlockSize;
