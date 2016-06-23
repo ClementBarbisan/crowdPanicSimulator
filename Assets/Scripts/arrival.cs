@@ -12,6 +12,7 @@ public class arrival : MonoBehaviour {
 	private int flockMax;
 	private int count;
     public string scene;
+	private bool end = false;
 
 	// Use this for initialization
 	void Start () {
@@ -24,10 +25,13 @@ public class arrival : MonoBehaviour {
 
 	IEnumerator startTimer()
 	{
-		while (time >= 0)
+		while (time >= 0 && !end)
 		{
 			yield return new WaitForSeconds (1);
-			timer.text = "00:" + time;
+			if (time >= 10)
+				timer.text = "00:" + time;
+			else
+				timer.text = "00:0" + time;
 			if (time == 0)
 				StartCoroutine ("loadScene");
 			time--;
@@ -36,6 +40,7 @@ public class arrival : MonoBehaviour {
 
     IEnumerator loadScene()
     {
+		end = true;
 		winText.text = count + "/" + flockMax;
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene(scene);
@@ -43,7 +48,8 @@ public class arrival : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		arrivedText.text = "Safe : " + count + "/" + flockMax;
+		if (!end)
+			arrivedText.text = "Safe : " + count + "/" + flockMax;
 //        if (count >= manager.flockSize)
 //        {
 //            winText.text = count + "/" + flockMax;

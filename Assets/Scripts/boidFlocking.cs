@@ -110,11 +110,11 @@ public class boidFlocking : MonoBehaviour
 			Vector3 coordinates = Camera.main.WorldToScreenPoint (transform.position);
 			foreach (attractor attract in attracts) {
 				Vector3 coordinatesAttract = Camera.main.WorldToScreenPoint (attract.transform.position);
-				float dist = Vector3.Distance (coordinatesAttract, coordinates) * 10;
+				float dist = Vector3.Distance (coordinatesAttract, coordinates) * 20;
 				if (dist > 0.001f)
 					direction += new Vector2( (attract.force / (dist)) * (coordinatesAttract.x - coordinates.x),  (attract.force / (dist)) * (coordinatesAttract.y - coordinates.y));
 			}
-			//		direction /= attracts.Length;
+//			direction /= attracts.Length;
 //			flockVelocity += direction * Time.deltaTime;
 			currentCenter = Calc();
 			Vector2 tmp = (dispatch + currentCenter + direction) * Time.deltaTime;
@@ -242,10 +242,10 @@ public class boidFlocking : MonoBehaviour
 	{
 		circleRange.gameObject.SetActive (true);
 		if (Input.GetMouseButtonDown (1)) {
-			currentAttract.force += 3;
+			currentAttract.force += 30;
 			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
 		} else if (Input.GetMouseButtonDown (0) && rigidbody.simulated) {
-			currentAttract.force -= 10;
+			currentAttract.force -= 50;
 			boidController.flockSize--;
 			rigidbody.simulated = false;
 			anim.speed = 0;
