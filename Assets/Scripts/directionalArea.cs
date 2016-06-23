@@ -17,7 +17,9 @@ public class directionalArea : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D coll)
 	{
 		boidFlocking tmp;
-		if ((tmp = coll.GetComponent<boidFlocking> ()))
-			tmp.rigidbody.velocity += new Vector2 (speedX * Time.deltaTime, speedY * Time.deltaTime);
+		if ((tmp = coll.GetComponent<boidFlocking> ())) {
+			tmp.boidController.flockVelocity += new Vector2 (speedX * Time.deltaTime, speedY * Time.deltaTime);
+			tmp.boidController.flockCenter += new Vector2 (speedX * Time.deltaTime, speedY * Time.deltaTime);
+		}
 	}
 }
