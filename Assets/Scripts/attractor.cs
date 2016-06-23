@@ -17,7 +17,7 @@ public class attractor : MonoBehaviour {
 
 	public void explode()
 	{
-		force -= 50;
+		force -= 5;
 	}
 
 	// Update is called once per frame

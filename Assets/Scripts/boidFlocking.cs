@@ -22,6 +22,7 @@ public class boidFlocking : MonoBehaviour
 	public AudioSource soundying;
 	private Animator anim;
 	private Vector2 currentWallPosition;
+	public SpriteRenderer circleRange;
 
 	void Awake()
 	{
@@ -63,6 +64,8 @@ public class boidFlocking : MonoBehaviour
 
 	void Start ()
 	{
+		circleRange.gameObject.SetActive (false);
+		transform.rotation = Quaternion.Euler (new Vector3(0.0f, 0.0f, Mathf.PI / 2.0f));
 		anim.SetBool ("stopped", false);
 //		StartCoroutine ("raycastSearch");
 		dispatch = new Vector2 (0.0f, 0.0f);
@@ -138,7 +141,7 @@ public class boidFlocking : MonoBehaviour
 		while (((stuckIndex > 3 && touchWall) || stuckIndex > 4) && stuckIndex < 12) 
 		{
 			i++;
-			if (i > 11100 - stuckIndex * 1000) {
+			if (i > 11075 - stuckIndex * 1000) {
 				StartCoroutine ("die");
 				return true;
 			}
@@ -224,14 +227,24 @@ public class boidFlocking : MonoBehaviour
 		}
 
 	}
+	void OnMouseEnter()
+	{
+		circleRange.gameObject.SetActive (true);
+	}
+
+	void OnMouseExit()
+	{
+		circleRange.gameObject.SetActive (false);
+	}
 
 	void OnMouseOver()
 	{
+		circleRange.gameObject.SetActive (true);
 		if (Input.GetMouseButtonDown (1)) {
 			currentAttract.force += 3;
 			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
 		} else if (Input.GetMouseButtonDown (0)) {
-			currentAttract.force -= 10;
+			currentAttract.force -= 5;
 			boidController.flockSize--;
 			rigidbody.simulated = false;
 			anim.speed = 0;

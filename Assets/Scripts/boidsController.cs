@@ -7,6 +7,7 @@ public class boidsController : MonoBehaviour
 	public float maxVelocity = 20;
 	public float randomness = 1;
 	public int flockSize = 20;
+	private int maxFlockSize;
 	public GameObject prefab;
 	public float radius;
 	public float maxAcceleration;
@@ -21,6 +22,7 @@ public class boidsController : MonoBehaviour
 
 	void Start()
 	{
+		maxFlockSize = flockSize;
 		coll = GetComponent<Collider2D> ();
 		boids = new GameObject[flockSize];
 		boidsRigidBody = new Rigidbody2D[flockSize];
@@ -33,7 +35,7 @@ public class boidsController : MonoBehaviour
 				Random.value * coll.bounds.size.z
 			) - coll.bounds.extents;
 
-			GameObject boid = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+			GameObject boid = Instantiate(prefab, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
 			boid.transform.parent = transform;
 			boid.transform.position = position;
 			radius = boid.GetComponent<CircleCollider2D> ().radius;
@@ -94,7 +96,7 @@ public class boidsController : MonoBehaviour
 
 	void Update ()
 	{
-		counter.text = "Count : " + flockSize + "/50";
+		counter.text = "Count : " + flockSize + "/" + maxFlockSize;
 		Vector2 theCenter = Vector2.zero;
 //		Vector2 theVelocity = Vector2.zero;
 

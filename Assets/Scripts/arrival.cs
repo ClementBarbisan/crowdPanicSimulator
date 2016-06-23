@@ -45,6 +45,7 @@ public class arrival : MonoBehaviour {
 		{
 			Rigidbody2D tmp = coll.GetComponent<Rigidbody2D> ();
 			tmp.simulated = false;
+			coll.gameObject.SetActive (false);
 		}
 	}
 }
