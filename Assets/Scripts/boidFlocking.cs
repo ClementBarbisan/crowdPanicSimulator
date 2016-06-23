@@ -244,7 +244,7 @@ public class boidFlocking : MonoBehaviour
 			currentAttract.force += 3;
 			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
 		} else if (Input.GetMouseButtonDown (0)) {
-			currentAttract.force -= 5;
+			currentAttract.force -= 7;
 			boidController.flockSize--;
 			rigidbody.simulated = false;
 			anim.speed = 0;

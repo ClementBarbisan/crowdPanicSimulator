@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\attractor.cs" />
      <Compile Include="Assets\Scripts\boidFlocking.cs" />
      <Compile Include="Assets\Scripts\boidsController.cs" />
+     <Compile Include="Assets\Scripts\center.cs" />
      <Compile Include="Assets\Scripts\directionalArea.cs" />
      <Compile Include="Assets\Scripts\explose.cs" />
      <Compile Include="Assets\Scripts\stairs.cs" />
