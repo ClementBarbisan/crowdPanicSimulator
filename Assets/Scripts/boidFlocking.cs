@@ -55,7 +55,7 @@ public class boidFlocking : MonoBehaviour
 //			yield return new WaitForSeconds (2);
 			}
 			boidController.flockCenter += new Vector2 (rigidbody.velocity.x + Mathf.Cos ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad),
-				rigidbody.velocity.y + Mathf.Sin ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad));
+				rigidbody.velocity.y + Mathf.Sin ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad)) * boidController.radius;
 //			rigidbody.velocity += new Vector2 (rigidbody.velocity.x + Mathf.Cos ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad),
 //				rigidbody.velocity.y + Mathf.Sin ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad));
 //		yield return null;
@@ -173,7 +173,7 @@ public class boidFlocking : MonoBehaviour
 			touchAgent = false;
 		}
 		else if (coll.tag == "wall") {
-			rigidbody.velocity = rigidbody.velocity.normalized;
+//			rigidbody.velocity = rigidbody.velocity.normalized;
 //			boidController.flockVelocity = rigidbody.velocity.normalized;
 			stuckIndex -= 2;
 			touchWall = false;
@@ -189,15 +189,15 @@ public class boidFlocking : MonoBehaviour
 			float avoidY = transform.position.y - coll.transform.position.y;
 			float angle = Mathf.Atan2 (avoidY, avoidX);
 			rigidbody.velocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
-			boidController.flockCenter += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
-			boidController.flockVelocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
+//			boidController.flockCenter += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
+//			boidController.flockVelocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
 		}
 		else if (coll.tag == "agents") {
 			if (touchWall) {
-				float avoidX = transform.position.x - coll.transform.position.x - currentWallPosition.x;
-				float avoidY = transform.position.y - coll.transform.position.y - currentWallPosition.y;
+				float avoidX = transform.position.x - currentWallPosition.x;
+				float avoidY = transform.position.y - currentWallPosition.y;
 				float angle = Mathf.Atan2 (avoidY, avoidX);
-				rigidbody.velocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
+				rigidbody.velocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
 				if (Vector2.Distance (transform.position, coll.transform.position) < boidController.radius / 3.0f)
 					stuckIndex++;
 			}
@@ -217,8 +217,11 @@ public class boidFlocking : MonoBehaviour
 			StartCoroutine ("die");
 		if (coll.tag == "wall")
 		{
-			boidController.flockVelocity = -rigidbody.velocity.normalized;
-			boidController.flockCenter -= rigidbody.velocity;
+			float avoidX = transform.position.x - coll.transform.position.x;
+			float avoidY = transform.position.y - coll.transform.position.y;
+			float angle = Mathf.Atan2 (avoidY, avoidX);
+			boidController.flockCenter += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
+			boidController.flockVelocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
 //			boidController.flockVelocity = Vector2.zero;
 			stuckIndex += 2;
 			touchWall = true;
@@ -244,10 +247,10 @@ public class boidFlocking : MonoBehaviour
 	void OnMouseOver()
 	{
 		circleRange.gameObject.SetActive (true);
-		if (Input.GetMouseButtonDown (1)) {
+		if (Input.GetMouseButtonDown (1) && currentAttract.force < 90) {
 			currentAttract.force += 30;
 			render.color += new Color (0.0f, 0.25f, 0.0f, 0.0f);
-		} else if (Input.GetMouseButtonDown (0) && rigidbody.simulated) {
+		} else if (Input.GetMouseButtonDown (0) && currentAttract.force > -100) {
 			currentAttract.force -= 50;
 			boidController.flockSize--;
 			rigidbody.simulated = false;

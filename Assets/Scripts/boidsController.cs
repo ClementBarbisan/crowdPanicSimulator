@@ -111,14 +111,6 @@ public class boidsController : MonoBehaviour
 
 		flockCenter = theCenter/(flockSize);
 		//		flockVelocity = theVelocity/(flockSize);
-//		Vector2 direction = new Vector2(0.0f, 0.0f);
-//		Vector3 coordinates = Camera.main.WorldToViewportPoint (transform.position);
-//		foreach (attractor attract in attracts) {
-//			Vector3 coordinatesAttract = Camera.main.WorldToViewportPoint (attract.transform.position);
-//			direction += new Vector2( attract.force / Vector3.Distance(coordinatesAttract, coordinates) * (coordinatesAttract.x - coordinates.x),  attract.force / Vector3.Distance(coordinatesAttract, coordinates) * (coordinatesAttract.y - coordinates.y));
-//		}
-////		direction /= attracts.Length;
-//		flockVelocity += direction * Time.deltaTime;
 		for (int i = 0; i < boids.Length; i++)
 		{
 			for (int j = 0; j < boids.Length; j++) {
@@ -127,29 +119,6 @@ public class boidsController : MonoBehaviour
 					flockSize--;
 					boidsFlocking [i].gameObject.SetActive (false);
 				}
-//				if (i != j && boids[i].activeSelf && boids[j].activeSelf && !boidsFlocking[i].stun && !boidsFlocking[j].stun)
-//				{
-//					float distance = Vector2.Distance (boids [j].transform.position, boids [i].transform.position);
-////					boidsRigidBody [j].velocity += boidsRigidBody [j].velocity.normalized * Time.deltaTime;
-//
-//
-//					if (distance < 5f) 
-//					{
-////						Debug.Log ("distance = " + distance + ", radius = " + radius);
-////						boidsRigidBody [j].velocity += (boidsRigidBody [i].velocity - boidsRigidBody [j].velocity) * Time.deltaTime;
-//						if (distance < radius)
-//						{
-//							float avoidX = boids[i].transform.position.x - boids[j].transform.position.x;
-//							float avoidY = boids [i].transform.position.y - boids [j].transform.position.y;
-//							float angle = Mathf.Atan2 (avoidY, avoidX);
-//							boidsFlocking[j].dispatch = new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius);
-//						}
-//						else if (distance >= radius)
-//							boidsFlocking [j].dispatch += (flockVelocity - boidsRigidBody [j].velocity) * Time.deltaTime;
-//						else
-//							boidsFlocking [j].dispatch = new Vector2 (0.0f, 0.0f);
-//					}
-//				}
 			}
 		}
 	}
