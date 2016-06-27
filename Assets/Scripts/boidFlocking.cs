@@ -125,7 +125,7 @@ public class boidFlocking : MonoBehaviour
 
 			//				Debug.Log ("Vector.x = " + tmp.x + ", vector.y = " + tmp.y);
 			if (tmp.magnitude > maxAcceleration)
-				rigidbody.velocity += rigidbody.velocity.normalized * maxAcceleration;
+				rigidbody.velocity += tmp.normalized * maxAcceleration;
 			else
 				rigidbody.velocity += tmp;
 			//				rigidbody.velocity += dispatch + direction * Time.deltaTime;
@@ -190,14 +190,14 @@ public class boidFlocking : MonoBehaviour
 			float angle = Mathf.Atan2 (avoidY, avoidX);
 			rigidbody.velocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
 //			boidController.flockCenter += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
-//			boidController.flockVelocity += new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
+			boidController.flockVelocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius) * Time.deltaTime;
 		}
 		else if (coll.tag == "agents") {
 			if (touchWall) {
 				float avoidX = transform.position.x - currentWallPosition.x;
 				float avoidY = transform.position.y - currentWallPosition.y;
 				float angle = Mathf.Atan2 (avoidY, avoidX);
-				rigidbody.velocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
+				rigidbody.velocity = Vector2.zero;
 				if (Vector2.Distance (transform.position, coll.transform.position) < boidController.radius / 3.0f)
 					stuckIndex++;
 			}
