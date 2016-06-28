@@ -77,19 +77,20 @@ public class boidsController : MonoBehaviour
 							flockVelocity.y + Mathf.Sin ((maxIndex * (180 / 5) + 180) * Mathf.Deg2Rad));
 			//		yield return null;
 			Vector2 theCenter = Vector2.zero;
-			Vector2 theVelocity = Vector2.zero;
+			int index = 0;
+			//		Vector2 theVelocity = Vector2.zero;
 
 			for (int i = 0; i < boids.Length; i++)
 			{
-				if (boids [i].activeSelf) 
+				if (boids [i].activeSelf && boidsRigidBody[i].simulated && Vector2.Distance(theCenter, new Vector2(boids [i].transform.position.x, boids [i].transform.position.y)) < maxDist / 2.0f) 
 				{
+					index++;
 					theCenter = theCenter + new Vector2 (boids [i].transform.position.x, boids [i].transform.position.y);
 					//				theVelocity = theVelocity + boidsRigidBody [i].velocity.normalized;
 				}
 			}
 
-			flockCenter += theCenter/(flockSize);
-			//		flockVelocity = theVelocity/(flockSize);
+			flockCenter = theCenter/(index);
 			yield return new WaitForSeconds (2);
 		}
 	}
@@ -98,18 +99,20 @@ public class boidsController : MonoBehaviour
 	{
 		counter.text = "Alive : " + flockSize + "/" + maxFlockSize;
 		Vector2 theCenter = Vector2.zero;
-//		Vector2 theVelocity = Vector2.zero;
+		int index = 0;
+		//		Vector2 theVelocity = Vector2.zero;
 
 		for (int i = 0; i < boids.Length; i++)
 		{
-			if (boids [i].activeSelf && boidsRigidBody[i].simulated) 
+			if (boids [i].activeSelf && boidsRigidBody[i].simulated && Vector2.Distance(theCenter, new Vector2(boids [i].transform.position.x, boids [i].transform.position.y)) < maxDist / 2.0f) 
 			{
+				index++;
 				theCenter = theCenter + new Vector2 (boids [i].transform.position.x, boids [i].transform.position.y);
 				//				theVelocity = theVelocity + boidsRigidBody [i].velocity.normalized;
 			}
 		}
 
-		flockCenter = theCenter/(flockSize);
+		flockCenter = theCenter/(index);
 		//		flockVelocity = theVelocity/(flockSize);
 		for (int i = 0; i < boids.Length; i++)
 		{

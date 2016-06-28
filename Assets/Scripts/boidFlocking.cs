@@ -197,7 +197,7 @@ public class boidFlocking : MonoBehaviour
 				float avoidX = transform.position.x - currentWallPosition.x;
 				float avoidY = transform.position.y - currentWallPosition.y;
 				float angle = Mathf.Atan2 (avoidY, avoidX);
-				rigidbody.velocity = Vector2.zero;
+				rigidbody.velocity = new Vector2 (Mathf.Cos (angle) * boidController.radius, Mathf.Sin (angle) * boidController.radius);
 				if (Vector2.Distance (transform.position, coll.transform.position) < boidController.radius / 3.0f)
 					stuckIndex++;
 			}
