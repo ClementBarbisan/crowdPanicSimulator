@@ -146,7 +146,7 @@ public class boidFlocking : MonoBehaviour
 			i++;
 			if (i > 11050 - stuckIndex * 1000) {
 				StartCoroutine ("die");
-				return true;
+				yield break;
 			}
 			yield return null;
 		}
